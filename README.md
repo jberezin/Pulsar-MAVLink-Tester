@@ -103,7 +103,7 @@ Make sure you connect as follows;
 | | | |
 |GND| ----------- |GND|
 |TX| ----------- |RX|
-|RX| ----------- |TX|
+|RX| ----------- |TX|m
 
 On the Arduino I configure Serial1 to operate at 57600bps with
 

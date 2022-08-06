@@ -26,8 +26,9 @@
 #define FMX_SYS_ID 1    // MAVLink System ID of this device. For example a companion computer (Arduino, RasPi etc) which is sending a heartbeat.
                         // I am setting this to 1, as all electronics on the drone itself should have the same SystemID as
                         // the AutoPilot, and it has sysID = 1.
-#define FMX_COMP_ID 100 // MAVLink Component ID of this device. For example a companion computer (Arduino, RasPi etc) which is sending a heartbeat.
+#define FMX_COMP_ID 111 // MAVLink Component ID of this device. For example a companion computer (Arduino, RasPi etc) which is sending a heartbeat.
                         // I am setting this to 100, as it can be from 1 to 255 but the AutoPilot has compID = 1 so can't use that.
+                        // jeff berezin changed to 111
 #define AP_SYS_ID 1     // MAVLink System ID of the autopilot.
 #define AP_COMP_ID 1    // MAVLink Component ID of the autopilot.
 

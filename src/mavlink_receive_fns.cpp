@@ -452,7 +452,11 @@ void mavlink_receive()
         //============================
         case MAVLINK_MSG_ID_RC_CHANNELS_RAW: //  #35  https://mavlink.io/en/messages/common.html#RC_CHANNELS_RAW
         {
+
+          
 #ifdef MAVLINK_DEBUG
+
+
             debugPrint("=RC_CHANNELS_RAW - undecoded");
 #endif
 
@@ -462,8 +466,21 @@ void mavlink_receive()
         //============================
         case MAVLINK_MSG_ID_SERVO_OUTPUT_RAW: //  #36  https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
         {
+            mavlink_servo_output_raw_t packet;
+            mavlink_msg_servo_output_raw_decode(&msg, &packet);
 #ifdef MAVLINK_DEBUG
-            debugPrint("=SERVO_OUTPUT_RAW - undecoded");
+            debugPrint("=SERVO_OUTPUT_RAW");
+            debugPrint(" TimeStamp:");
+            Serial.print(packet.time_usec);
+            debugPrint("[1:");
+            Serial.print(packet.servo1_raw);
+            //debugPrint("2:");
+            //Serial.print(packet.servo2_raw);
+            debugPrint("][3:");
+            Serial.print(packet.servo3_raw);
+             debugPrint("]");
+            //debugPrint("4:");
+            //Serial.print(packet.servo4_raw);
 #endif
 
             break;

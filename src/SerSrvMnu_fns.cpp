@@ -40,7 +40,7 @@ void menuPrint()
         Serial.println("[ON]");
     else
         Serial.println("[OFF]");
-    Serial.println("[2].......STREAM   - mavlink_request_datastream(MAV_DATA_STREAM_RAW_SENSORS)");
+    Serial.println("[2].......STREAM   - mavlink_request_datastream(MAV_DATA_STREAM_RC_CHANNELS)");
     Serial.println("[3].......STREAM   - mavlink_unrequest_datastream(MAV_DATA_STREAM_ALL);");
     Serial.println("[4].......STREAM   - mavlink_request_streaming_params_from_ap()");
     Serial.println("[5].......STREAM   - mavlink_unrequest_streaming_params_from_ap()");
@@ -105,7 +105,8 @@ void menuDo()
         else if (MenuChoice == "2")
         {
             menuClearScreen();
-            mavlink_request_datastream(MAV_DATA_STREAM_RAW_SENSORS);
+            //mavlink_request_datastream(MAV_DATA_STREAM_RAW_SENSORS);
+            mavlink_request_datastream(MAV_DATA_STREAM_RC_CHANNELS);  // changed by jef berezin to get motor and rc dat
             //menuGoBack(); // display [0] to exit msg and wait
         }
         else if (MenuChoice == "3")

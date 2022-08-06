@@ -380,20 +380,53 @@ void mavlink_unrequest_streaming_params_from_ap()
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-
+//#ifdef I_actually_want_these
     // UnRequest MAVLINK_MSG_ID_SERVO_OUTPUT_RAW (#36) - https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
     _cl_param1 = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW; // MAVLink Message ID
     mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-
+//#endif
     // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
     _cl_param1 = MAVLINK_MSG_ID_RC_CHANNELS; // MAVLink Message ID
     mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
+/////
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 27; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 29; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 242; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 111; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 116; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
 
+
+/////
     debugPrintln("mavlink_unrequest_streaming_params_from_ap() - Complete");
 } // END - mavlink_unrequest_streaming_params_from_ap()
