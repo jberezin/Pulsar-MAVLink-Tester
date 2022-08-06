@@ -67,6 +67,13 @@ void mavlink_request_datastream(uint8_t data_stream)
     uint8_t buf[MAVLINK_MAX_PACKET_LEN];
 
     // Pack and send the message
+
+    // If we are getting motor stuff, we need it to come more often
+
+    if (data_stream == MAV_DATA_STREAM_RC_CHANNELS)
+    {
+        _req_message_rate=10;  // 10 times per second    
+    }
     mavlink_msg_request_data_stream_pack(_system_id, _component_id, &msg, _target_system, _target_component, _req_stream_id, _req_message_rate, _start_stop);
     uint16_t len = mavlink_msg_to_send_buffer(buf, &msg); // Send the message (.write sends as bytes)
     Serial1.write(buf, len);                              // Write data to serial port
@@ -190,13 +197,13 @@ void mavlink_request_streaming_params_from_ap()
     // components of the MAVLink COMMAND_LONG message - https://mavlink.io/en/messages/common.html#COMMAND_LONG
     uint16_t _cl_command = MAV_CMD_SET_MESSAGE_INTERVAL; // https://mavlink.io/en/messages/common.html#MAV_CMD_SET_MESSAGE_INTERVAL
     uint8_t _cl_confirmation = 0;                        // always 0 for first transmission, then incremented. https://mavlink.io/en/services/command.html#COMMAND_LONG
-    float _cl_param1 = MAVLINK_MSG_ID_POWER_STATUS;      // MAVLink Message ID
-    float _cl_param2 = 1000000;                          // Interval (uS) between messages e.g. 1sec interval = 1000000uS
+    float _cl_param1 = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW;      // MAVLink Message ID
+    float _cl_param2 = 100000;                          // Interval (uS) between messages e.g. 1/10 sec interval = 100000uS
     float _cl_param3 = 0;                                // Not used, so set to zero.
     float _cl_param4 = 0;                                // Not used, so set to zero.
     float _cl_param5 = 0;                                // Not used, so set to zero.
     float _cl_param6 = 0;                                // Not used, so set to zero.
-    float _cl_param7 = 0;                                // Not used, so set to zero.
+    float _cl_param7 = 0;                                // Not used, so set to zero.m
 
     // Initialize the required buffers
     mavlink_message_t msg;
@@ -208,7 +215,7 @@ void mavlink_request_streaming_params_from_ap()
     uint16_t len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                              // Write data to serial port byte by byte.
     delay(500);                                           // give AP 1/2 sec to process before we send next CMD, don't want to DOS it.
-
+#ifdef blockForNow
     // Modify the COMMAND_LONG / MAV_CMD_SET_MESSAGE_INTERVAL message for the next message I want to request, then pack and send it.
     // Request MAVLINK_MSG_ID_HWSTATUS (#165) - https://mavlink.io/en/messages/ardupilotmega.html#HWSTATUS
     _cl_param1 = MAVLINK_MSG_ID_HWSTATUS; // MAVLink Message ID
@@ -265,7 +272,7 @@ void mavlink_request_streaming_params_from_ap()
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-
+#endif
     debugPrintln("mavlink_request_streaming_params_from_ap() - Complete");
 } // END - mavlink_request_streaming_params_from_ap()
 
@@ -295,7 +302,7 @@ void mavlink_unrequest_streaming_params_from_ap()
     // components of the MAVLink COMMAND_LONG message - https://mavlink.io/en/messages/common.html#COMMAND_LONG
     uint16_t _cl_command = MAV_CMD_SET_MESSAGE_INTERVAL; // https://mavlink.io/en/messages/common.html#MAV_CMD_SET_MESSAGE_INTERVAL
     uint8_t _cl_confirmation = 0;                        // always 0 for first transmission, then incremented. https://mavlink.io/en/services/command.html#COMMAND_LONG
-    float _cl_param1 = MAVLINK_MSG_ID_POWER_STATUS;      // MAVLink Message ID
+    float _cl_param1 = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW;      // MAVLink Message ID
     float _cl_param2 = -1;                               // Interval (uS) between messages e.g. 1sec interval = 1000000uS or -1 to disable
     float _cl_param3 = 0;                                // Not used, so set to zero.
     float _cl_param4 = 0;                                // Not used, so set to zero.
@@ -314,7 +321,7 @@ void mavlink_unrequest_streaming_params_from_ap()
     uint16_t len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len); //Write data to serial port byte by byte.
     delay(500); // give AP 1/2 sec to process before we send next CMD, don't want to DOS it.
-
+#ifdef messagesIdontuse
     // Pack and send remaining messages
     // ================================
     // Modify the COMMAND_LONG / MAV_CMD_SET_MESSAGE_INTERVAL message for the next message I want to request, then pack and send it.
@@ -380,21 +387,21 @@ void mavlink_unrequest_streaming_params_from_ap()
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-//#ifdef I_actually_want_these
+ 
     // UnRequest MAVLINK_MSG_ID_SERVO_OUTPUT_RAW (#36) - https://mavlink.io/en/messages/common.html#SERVO_OUTPUT_RAW
     _cl_param1 = MAVLINK_MSG_ID_SERVO_OUTPUT_RAW; // MAVLink Message ID
     mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-//#endif
+ 
     // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
     _cl_param1 = MAVLINK_MSG_ID_RC_CHANNELS; // MAVLink Message ID
     mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
-/////
+ 
     // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
     _cl_param1 = 27; // MAVLink Message ID
     mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
@@ -425,8 +432,13 @@ void mavlink_unrequest_streaming_params_from_ap()
     len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
     Serial1.write(buf, len);                     // Write data to serial port byte by byte.
     delay(500);
+    // UnRequest MAVLINK_MSG_ID_RC_CHANNELS (#65) - https://mavlink.io/en/messages/common.html#RC_CHANNELS
+    _cl_param1 = 22; // MAVLink Message ID
+    mavlink_msg_command_long_pack(_system_id, _component_id, &msg, _target_system, _target_component, _cl_command, _cl_confirmation, _cl_param1, _cl_param2, _cl_param3, _cl_param4, _cl_param5, _cl_param6, _cl_param7);
+    len = mavlink_msg_to_send_buffer(buf, &msg); // put message into our send buffer and also get it's size in bytes.
+    Serial1.write(buf, len);                     // Write data to serial port byte by byte.
+    delay(500);
 
-
-/////
+#endif
     debugPrintln("mavlink_unrequest_streaming_params_from_ap() - Complete");
 } // END - mavlink_unrequest_streaming_params_from_ap()
