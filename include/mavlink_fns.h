@@ -4,7 +4,7 @@
  * header file for my various mavlink functions.
  *
  */
-
+#include "hoverboard_fns.h"
 #ifndef MAVLINK_FNS_H
 #define MAVLINK_FNS_H
 
@@ -20,7 +20,6 @@
 #include <ardupilotmega/mavlink.h> // The Mavlink library for the "ardupilotmega" dialect (which sub's in the "common" dialect too)
 
 // MAVLink Specific Debugs
-#define MAVLINK_DEBUG  // uncomment if you want the various MAVLINK routines to execute their debugPrint... statements
 
 // MAVLink IDs - https://ardupilot.org/dev/docs/mavlink-basics.html
 #define FMX_SYS_ID 1    // MAVLink System ID of this device. For example a companion computer (Arduino, RasPi etc) which is sending a heartbeat.

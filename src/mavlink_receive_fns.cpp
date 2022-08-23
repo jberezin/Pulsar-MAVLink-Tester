@@ -14,7 +14,7 @@
 #ifdef FMX
     #include "FmxSettings_fns.h"
 #endif
-
+#include "hoverboard_fns.h"
 // Define any globals that only the functions in this file need.
 
 uint8_t sys1comp1_expectedSeqNum = 0; // used to keep track of MAVLink sequence numbers of msgs received from AP (sysID = 1, CompID = 1)
@@ -223,7 +223,9 @@ void mavlink_receive()
         if ((msg.sysid == 1) && (msg.compid == 1))  // i.e we have message from my autopilot
         {
             if (msg.seq != (sys1comp1_expectedSeqNum))    // is it the next one in the sequence?
-                debugPrintln("mavlink_receive() - WARNING - MSG(s) missed from sysID:1,compID:1 according to seq nums!");
+#ifdef MAVLINK_DEBUG            
+                debugPrintln("mavlink_receive() - WARNING - ) missed from sysID:1,compID:1 according to seq nums!");
+#endif                
             sys1comp1_expectedSeqNum = msg.seq+1;   // as its a uint8_t it will roll correctly at seq = 255, the next will be seq = 0.
         }
         // I have commented out the below check, as the ADSB controller does not emit sequential seq nums.
@@ -482,6 +484,24 @@ void mavlink_receive()
             //debugPrint("4:");
             //Serial.print(packet.servo4_raw);
 #endif
+//Serial.print(packet.servo1_raw);
+//Serial.println(packet.servo3_raw);  
+
+//Normalize values for hoverboard (Steering -1000 to 1000, throttle -1000 to 1000)
+//float steer = ((packet.servo1_raw-1500.0)/400.0)*1000.0;
+//float throttle =  ((packet.servo3_raw-1500.0)/400.0)*1000.0;
+
+// REDUCE "GAIN"  ??
+float steer = ((packet.servo1_raw-1500.0)/400.0)*600.0;
+float throttle =  ((packet.servo3_raw-1500.0)/400.0)*600.0;
+lastMotorInfo=millis();
+int iSteer = steer;
+int iThrottle = throttle;
+//Serial.print(iSteer);
+//Serial.println(iThrottle);  
+Send(iSteer,iThrottle);
+
+// temporary
 
             break;
         }
@@ -686,7 +706,9 @@ void mavlink_receive()
         //============================
         // DEFAULT - should not happen, but programing it defensively
         default:
+#ifdef MAVLINK_DEBUG        
             Serial.print(" - WARNING - we hit the default: in mavlink packet decode switch");
+#endif            
             break;
 
         } // END - of msg decoder switch

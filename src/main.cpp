@@ -14,7 +14,7 @@
 // Globals for this module
 // ======================= 
 
-bool MavRecOn = false;
+bool MavRecOn = true;
 bool HideSomeOn = false;
 
 
