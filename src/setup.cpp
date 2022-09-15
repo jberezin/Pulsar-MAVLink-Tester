@@ -12,13 +12,15 @@
 
 unsigned long  lastMotorInfo=0;
 
+int firstTime=1;
+
 void setup()
 {
 
     Serial.begin(115200);   // Initialise serial monitor/console port
     delay(5000);            // wait for Serial to come up so we don't miss initial messages
     enableDebugging(Serial);// enable my debugging print functions
-
+     firstTime=1;
     Serial.println("Pulsar MAVLink Tester");
 
     // mod by jeff berezin for 115k

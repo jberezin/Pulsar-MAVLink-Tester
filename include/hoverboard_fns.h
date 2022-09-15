@@ -15,5 +15,5 @@
  //#define MAVLINK_DEBUG  // uncomment if you want the various MAVLINK routines to execute their debugPrint... statements
 
 extern unsigned long lastMotorInfo;
-
+extern int firstTime;
  extern void Send(int16_t uSteer, int16_t uSpeed);
